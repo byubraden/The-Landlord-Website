@@ -44,6 +44,61 @@ app.get('/', (req, res) => {
 });
 
 
+// LOGIN Session middleware configuration
+app.use(session({
+    secret: 'secretKey', // Secret key for session
+    resave: false,
+    saveUninitialized: true,
+}));
+
+
+// Middleware to protect routes
+function isAuthenticated(req, res, next) {
+    if (req.session.user) {
+        return next(); // User is authenticated
+    }
+    res.redirect('/loginpage'); // Redirect to login page
+}
+
+
+// LOGIN ROUTE
+app.get('/loginpage', (req, res) => {
+    res.render('login'); // Render login.ejs from the views folder
+});
+
+// LOGIN ROUTE (POST request)
+app.post('/loginpage', (req, res) => {
+    const { username, password } = req.body;
+
+    knex('users')
+        .where({ username })
+        .andWhere({ password })
+        .first()
+        .then(user => {
+            if (user) {
+                req.session.user = user; // Save user in session
+                res.redirect('/'); // Redirect to home after successful login
+            } else {
+                res.render('login', { error: "Invalid username or password" });
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        });
+});
+
+
+// LOGOUT ROUTE
+app.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).send('Failed to log out');
+        }
+        res.redirect('/'); // Redirect to home page after logout
+    });
+});
+
 // Start the server
 app.listen(port, () => {
     console.log(`Listening my DUDE on http://localhost:${port}`);
