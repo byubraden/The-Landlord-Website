@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,8 @@
         :root {
             --dark-background: #050505;
             --primary-color: #1B9AAA;
-            --secondary-color: #E9F1F7; /* Light blue */
+            --secondary-color: #E9F1F7;
+            /* Light blue */
             --light-background: #F5F5F5;
             --white: #FFFFFF;
         }
@@ -30,16 +32,9 @@
             background-color: var(--dark-background);
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-end;
             padding: 10px 20px;
             box-sizing: border-box;
-        }
-
-        .logo {
-            height: 50px;
-            width: 50px;
-            background-color: var(--primary-color);
-            border-radius: 50%;
         }
 
         .account-buttons {
@@ -51,12 +46,34 @@
             background-color: var(--primary-color);
             color: var(--white);
             font-weight: bold;
+            font-size: 1em;
+            /* Ensures font size is consistent */
             padding: 8px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s;
+            display: inline-flex;
+            /* Ensures buttons are aligned in one line */
+            justify-content: center;
+            /* Aligns content inside buttons */
+            align-items: center;
+            /* Centers text within buttons */
+            line-height: 1.2;
+            /* Ensures consistent line height */
+        }
+
+        /* Reset the default button padding and margins */
+        form button {
+            margin: 0;
+            padding: 8px 15px;
+            /* Same as .account-tab padding */
+            font-size: 1em;
+            /* Ensures font size matches */
+            font-family: Arial, sans-serif;
+            /* Match font family */
+            text-align: center;
         }
 
         .account-tab:hover {
@@ -81,26 +98,33 @@
             color: var(--primary-color);
         }
 
-        .search-container {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
-
         form {
             width: 50%;
             display: flex;
             position: relative;
         }
 
-        .search-bar {
+        .search-container {
+            display: flex;
+            justify-content: center;
             width: 100%;
+            /* Optional: Max width to control the container size */
+            margin: 0 auto;
+            /* Center the search container */
+            position: relative;
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            /*Allow the search bar to expand*/
             padding: 15px;
             font-size: 1.5em;
             border: 2px solid var(--secondary-color);
-            border-radius: 10px;
+            border-radius: 10px 0 0 10px;
+            /* Rounded left corners */
             outline: none;
             box-sizing: border-box;
+            /* max-width: calc(100% - 50px);  Prevents the search bar from growing too wide */
         }
 
         .search-bar:focus {
@@ -108,47 +132,64 @@
         }
 
         .search-icon {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 36px;
-            height: 36px;
-            fill: var(--dark-background);
+            display: flex;
+            align-items: center;
+            /* Vertically center the icon */
+            justify-content: center;
+            /* Horizontally center the icon */
+            width: 50px;
+            /* Fixed width for the icon container */
+            height: 100%;
+            /* Match the height of the search bar */
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 0 10px 10px 0;
+            /* Rounded right corners */
             cursor: pointer;
         }
 
+        .search-icon svg {
+            width: 24px;
+            /* Icon size */
+            height: 24px;
+            /* Icon size */
+            fill: var(--white);
+        }
     </style>
 </head>
+
 <body>
     <!-- Top Bar -->
     <div class="top-bar">
-        <div class="logo"></div>
         <div class="account-buttons">
             <% if (user) { %>
                 <a href="/admin" class="account-tab">Admin</a>
                 <form action="/logout" method="POST" style="display: inline;">
                     <button type="submit" class="account-tab">Logout</button>
                 </form>
-            <% } else { %>
-                <a href="/loginpage" class="account-tab">Login</a>
-            <% } %>
+                <% } else { %>
+                    <a href="/loginpage" class="account-tab">Login</a>
+                    <% } %>
         </div>
     </div>
+
 
     <!-- Centered Content -->
     <div class="content">
         <div class="site-title">Rate My Landlord</div>
         <div class="search-container">
             <form action="/search" method="GET">
-                <input type="text" name="landlord" class="search-bar" placeholder="Search for a landlord or apartment...">
+                <input type="text" name="landlord" class="search-bar"
+                    placeholder="Search for a landlord or apartment...">
                 <button type="submit" class="search-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M10 2a8 8 0 106.32 13.906l4.387 4.388a1 1 0 001.414-1.415l-4.388-4.387A8 8 0 0010 2zm0 2a6 6 0 110 12A6 6 0 0110 4z"/>
+                        <path
+                            d="M10 2a8 8 0 106.32 13.906l4.387 4.388a1 1 0 001.414-1.415l-4.388-4.387A8 8 0 0010 2zm0 2a6 6 0 110 12A6 6 0 0110 4z" />
                     </svg>
                 </button>
             </form>
         </div>
     </div>
 </body>
+
 </html>
