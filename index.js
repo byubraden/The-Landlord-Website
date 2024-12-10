@@ -11,7 +11,7 @@ const knex = require("knex")({
     connection: {
         host: "localhost",
         user: "postgres",
-        password: "", // Replace with your actual password
+        password: "sigr2of3", // Replace with your actual password
         database: "PROJECT3",
         port: 5432,
     },
@@ -47,7 +47,7 @@ app.use(session({
 }));
 
 // Apply isAuthenticated middleware to admin routes
-app.use(['/admin', '/admin-volunteers', '/admin-users'], isAuthenticated);
+app.use(['/admin', '/admin-reviews', '/admin-users'], isAuthenticated);
 
 
 // HOME ROUTE
@@ -429,6 +429,158 @@ app.get('/admin-users', (req, res) => {
             res.status(500).send('Internal Server Error');
         });
 });
+
+app.get('/admin-tenant-reviews', async (req, res) => {
+    const user = req.session.user || null;  // Get user from session
+    try {
+        const tenantReviews = await knex('tenant_reviews')
+            .join('landlord', 'tenant_reviews.landlord_id', 'landlord.id')
+            .select(
+                'tenant_reviews.id as review_id',
+                'landlord.name as landlord_name',
+                'reviewer_first',
+                'reviewer_last',
+                'tenant_reviews.date_created as date_created',
+                'responsiveness',
+                'maintenance_and_repairs',
+                'communication',
+                'transparency_and_honesty',
+                'fairness_and_flexibility',
+                'additional_comments'
+            )
+            .orderBy('date_created', 'desc');
+
+        // Pass `user` to the EJS template
+        res.render('admin-tenant-reviews', { tenantReviews, user });
+    } catch (error) {
+        console.error('Error fetching tenant reviews:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+// Edit review route (GET)
+app.get('/edit-review/:id', async (req, res) => {
+    const reviewId = req.params.id;
+
+    try {
+        // Fetch the review from the database
+        const review = await knex('tenant_reviews')
+            .where('id', reviewId)
+            .first();
+
+        if (!review) {
+            return res.status(404).send('Review not found');
+        }
+
+        // Fetch the landlord's name associated with the review
+        const landlord = await knex('landlord')
+            .select('id', 'name')
+            .where('id', review.landlord_id)
+            .first();
+
+        if (!landlord) {
+            return res.status(404).send('Landlord not found for this review');
+        }
+
+        // Render the editReview page, passing review and landlord data
+        res.render('editReview', { 
+            review, 
+            landlordName: landlord.name, 
+            landlordId: landlord.id 
+        });
+    } catch (error) {
+        console.error('Error fetching review:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+// Edit review route (POST)
+app.post('/edit-review/:id', async (req, res) => {
+    const reviewId = req.params.id;
+    const {
+        reviewer_first,
+        reviewer_last,
+        responsiveness,
+        maintenance_and_repairs,
+        communication,
+        transparency_and_honesty,
+        fairness_and_flexibility,
+        additional_comments
+    } = req.body;
+
+    try {
+        // Validate that all required fields are present
+        if (
+            !reviewer_first || 
+            !reviewer_last || 
+            !responsiveness || 
+            !maintenance_and_repairs || 
+            !communication || 
+            !transparency_and_honesty || 
+            !fairness_and_flexibility
+        ) {
+            return res.status(400).send('Missing required fields.');
+        }
+
+        // Update the review in the 'tenant_reviews' table
+        const updated = await knex('tenant_reviews')
+            .where('id', reviewId)
+            .update({
+                reviewer_first: reviewer_first.trim(),
+                reviewer_last: reviewer_last.trim(),
+                responsiveness: Number(responsiveness),
+                maintenance_and_repairs: Number(maintenance_and_repairs),
+                communication: Number(communication),
+                transparency_and_honesty: Number(transparency_and_honesty),
+                fairness_and_flexibility: Number(fairness_and_flexibility),
+                additional_comments: additional_comments || null,
+            });
+
+        if (updated === 0) {
+            return res.status(404).send('Review not found or no changes made');
+        }
+
+        // Fetch updated landlord and reviews to redirect to a review page
+        const landlord = await knex('landlord')
+            .select('id', 'name')
+            .where('id', (await knex('tenant_reviews').where('id', reviewId).first()).landlord_id)
+            .first();
+
+        if (!landlord) {
+            return res.status(404).send('Landlord not found after updating review');
+        }
+
+        // Redirect to the landlord's review view page
+        res.redirect(`/review-view/${landlord.id}`);
+    } catch (error) {
+        console.error('Error updating review:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+// Remove review route (POST)
+app.post('/removeReview/:id', async (req, res) => {
+    const reviewId = req.params.id;
+
+    try {
+        const deleted = await knex('tenant_reviews')
+            .where('id', reviewId)
+            .del();
+
+        if (deleted === 0) {
+            return res.status(404).send('Review not found');
+        }
+
+        res.redirect('/admin-tenant-reviews');
+    } catch (error) {
+        console.error('Error deleting review:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 
 // Start the server
 app.listen(port, () => {

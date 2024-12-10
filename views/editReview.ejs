@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit a Review</title>
+    <style>
+        /* Colors */
+        :root {
+            --dark-background: #050505;
+            --primary-color: #1B9AAA;
+            --secondary-color: #DDDBCB;
+            --light-background: #F5F1E3;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--light-background);
+            color: var(--dark-background);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            width: 80%;
+            max-width: 800px;
+            background-color: var(--white);
+            border: 2px solid var(--secondary-color);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-title {
+            font-size: 2em;
+            color: var(--primary-color);
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .slider-container {
+            margin-top: 10px;
+        }
+
+        .slider-label {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        .slider-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid var(--secondary-color);
+            border-radius: 5px;
+            resize: vertical;
+            height: 80px;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--dark-background);
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <div class="form-title">Edit a Review</div>
+
+    <form action="/edit-review/<%= review.id %>" method="POST">
+        <input type="hidden" name="reviewId" value="<%= review.id %>">
+        
+        <h2>Edit Review for Landlord</h2>
+    
+        <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input type="text" name="reviewer_first" value="<%= review.reviewer_first %>" required>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" name="reviewer_last" value="<%= review.reviewer_last %>" required>
+        </div>
+    
+        <!-- Sliders for each rating category -->
+        <% const categories = ['responsiveness', 'maintenance_and_repairs', 'communication', 'transparency_and_honesty', 'fairness_and_flexibility']; %>
+        <% categories.forEach(category => { %>
+        <div class="form-group">
+            <label class="form-label"><%= category.replace('_', ' ').replace(/\b\w/g, char => char.toUpperCase()) %></label>
+            <input type="range" name="<%= category %>" min="1" max="5" step="1" value="<%= review[category] %>">
+            <div class="slider-values">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+            </div>
+        </div>
+        <% }) %>
+    
+        <!-- Comment section -->
+        <div class="form-group">
+            <label for="comments" class="form-label">Additional Comments</label>
+            <textarea id="comments" name="additional_comments"><%= review.additional_comments || '' %></textarea>
+        </div>
+    
+        <!-- Submit button -->
+        <button type="submit" class="submit-btn">Update Review</button>
+    </form>
+    
+</div>
+
+</body>
+</html>

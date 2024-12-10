@@ -205,6 +205,11 @@
             border: 1px solid #ccc;
             padding: 0.8rem;
             text-align: left;
+            word-wrap: break-word;
+        }
+
+        td form {
+            display: inline-block; /* Ensures forms are displayed inline */
         }
 
         table th {
@@ -212,59 +217,78 @@
             color: white;
         }
 
-        .btn {
-            margin-top: 1rem;
+
+        /* Status Colors */
+        .status-pending {
+            font-weight: bold;
+            color: gray;
         }
 
-        .btn button {
-            padding: 0.5rem 1rem;
-            background-color: #003366;
-            color: white;
+        .status-approved {
+            font-weight: bold;
+            color: green;
+        }
+
+        .status-denied {
+            font-weight: bold;
+            color: rgb(198, 0, 0);
+        }
+
+        .status-completed {
+            font-weight: bold;
+            color: blue;
+        }
+
+        /* Button Styling */
+        .action-button {
+            display: inline-flex; /* Ensure buttons are inline and flex-aligned */
+            align-items: center; /* Center content vertically */
+            justify-content: center; /* Center content horizontally */
+            padding: 5px 10px; /* Padding for clickability */
+            margin-right: 5px; /* Space between buttons */
             border: none;
             border-radius: 4px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
             cursor: pointer;
-            font-size: 1rem;
+            transition: background-color 0.3s;
+            margin: 5px; /* Add spacing around buttons */
         }
 
-        .btn button:hover {
-            background-color: #0055aa;
+        .approve-button {
+            background-color: green;
         }
 
-        .editvol-button {
-            background-color: gray;
-            /* Gray background */
+        .approve-button:hover {
+            background-color: rgb(1, 84, 1);
+        }
+
+        .deny-button {
+            background-color: rgb(198, 0, 0);
+        }
+
+        .deny-button:hover {
+            background-color: rgb(110, 2, 2);
+        }
+
+        .editbutton {
+            background-color: gray; /* Gray background for edit button */
             color: white;
             border: none;
             padding: 5px 10px;
             border-radius: 5px;
-            cursor: pointer;
             font-weight: bold;
             font-size: 14px;
-        }
-
-        .editvol-button:hover {
-            background-color: #555;
-            /* Slightly darker gray on hover */
-        }
-
-        .deletevol-button {
-            background-color: black;
-            /* Black background */
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .editbutton:hover {
+            background-color: #4a4a4a; /* Darker gray for hover effect */
         }
 
-        .deletevol-button:hover {
-            background-color: #333;
-            /* Dark gray for hover effect */
-        }
-
-        .add-volunteer-button {
+        .add-user-button {
             background-color: #003366;
             /* Matches the blue color used in the table header */
             color: white;
@@ -280,11 +304,10 @@
             text-align: center;
         }
 
-        .add-volunteer-button:hover {
+        .add-user-button:hover {
             background-color: #002244;
             /* Slightly darker blue for hover effect */
         }
-        
         /* Logout Modal Styling */
         .logout-modal {
             position: fixed; /* Sticks modal to viewport */
@@ -371,8 +394,8 @@
                 transform: scale(1);
             }
         }
-        /* Footer Styles */
 
+        /* Footer Styles */
         footer {
             text-align: center;
             padding: 1rem 0;
@@ -393,8 +416,7 @@
 <body>
     <nav>
         <header class="header">
-            <div class="logo">Turtle Shelter Project</div>
-            <img src="/IMG/logo-circle.png" alt="Logo" width="70">
+            <div class="logo">Admin</div>
         </header>
         <ul>
             <li>
@@ -402,74 +424,36 @@
                     <button type="submit" class="nav-button">Home</button>
                 </form>
             </li>
-            <li>
-                <form action="/about" method="GET">
-                    <button type="submit" class="nav-button">About Us</button>
-                </form>
-            </li>
-            <li>
-                <form action="/volunteer-signup" method="GET">
-                    <button type="submit" class="nav-button">Sign-Up to Volunteer</button>
-                </form>
-            </li>
-            <li>
-                <form action="/request-event" method="GET">
-                    <button type="submit" class="nav-button">Request an Event</button>
-                </form>
-            </li>
             <% if (user) { %>
                 <li>
-                    <form action="/adminhomepage" method="GET">
+                    <form action="/admin" method="GET">
                         <button type="submit" class="nav-button">Admin</button>
                     </form>
                 </li>
                 <li>
                     <button onclick="openLogoutModal()" class="nav-button">Logout</button>
                 </li>
-                <% } else { %>
-                    <li>
-                        <form action="/loginpage" method="GET">
-                            <button type="submit" class="nav-button">Login</button>
-                        </form>
-                    </li>
-                    <% } %>
+            <% } else { %>
+                <li>
+                    <form action="/loginpage" method="GET">
+                        <button type="submit" class="nav-button">Login</button>
+                    </form>
+                </li>
+            <% } %>
         </ul>
     </nav>
-    
-    
-    
 
     <div class="container">
         <div class="sidebar">
             <ul>
                 <li>
-                    <form action="/adminhomepage" method="GET">
+                    <form action="/admin" method="GET">
                         <button type="submit">Admin Portal</button>
                     </form>
                 </li>
                 <li>
-                    <form action="/adminAnalytics" method="GET">
-                        <button type="submit">Event Analytics</button>
-                    </form>
-                </li>
-                <li>
-                    <form action="/admin-volunteers" method="GET">
-                        <button type="submit">Volunteers</button>
-                    </form>
-                </li>
-                <li>
-                    <form action="/admin-event-requests" method="GET">
-                        <button type="submit">Event Requests</button>
-                    </form>
-                </li>
-                <li>
-                    <form action="/admin-upcoming-events" method="GET">
-                        <button type="submit">Upcoming Events</button>
-                    </form>
-                </li>
-                <li>
-                    <form action="/admin-past-events" method="GET">
-                        <button type="submit">Past Events</button>
+                    <form action="/admin-tenant-reviews" method="GET">
+                        <button type="submit">Tenant Reviews</button>
                     </form>
                 </li>
                 <li>
@@ -481,127 +465,56 @@
         </div>
 
         <div class="main-content">
-
-            <div id="volunteer" class="tab-content active">
-                <h2>Volunteers</h2>
-                <button class="add-volunteer-button" onclick="location.href='/volunteer-signup'">+ Add Volunteer</button>
-                <% if (volunteers.length> 0) { %>
-                    <table>
-                        <thead>
+            <div id="" class="tab-content active">
+                <h2>Tenant Reviews</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date Created</th>
+                            <th>Reviewer First</th>
+                            <th>Reviewer Last</th>
+                            <th>Landlord Name</th>
+                            <th>Responsiveness</th>
+                            <th>Maintenance and Repairs</th>
+                            <th>Communication</th>
+                            <th>Transparency and Honesty</th>
+                            <th>Fairness and Flexibility</th>
+                            <th>Additional Comments</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% tenantReviews.forEach(review => { %>
                             <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Preferred Contact</th>
-                                <th>How Heard</th>
-                                <th>City</th>
-                                <th>State</th>
-                                <th>Sewing Level</th>
-                                <th>Hours a month</th>
-                                <th>Actions</th> <!-- Add this column for actions (delete and edit buttons) -->
+                                <td data-label="Date Created"><%= review.date_created %></td>
+                                <td data-label="Reviewer First"><%= review.reviewer_first %></td>
+                                <td data-label="Reviewer Last"><%= review.reviewer_last %></td>
+                                <td data-label="Landlord Name"><%= review.landlord_name %></td>
+                                <td data-label="Responsiveness"><%= review.responsiveness %></td>
+                                <td data-label="Maintenance and Repairs"><%= review.maintenance_ad_repairs %></td>
+                                <td data-label="Communication"><%= review.communication %></td>
+                                <td data-label="Transparency and Honesty"><%= review.transparency_and_honesty %></td>
+                                <td data-label="Fairness and Flexibility"><%= review.fairness_and_flexibility %></td>
+                                <td data-label="Additional Comments"><%= review.additional_comments %></td>
+                                <td data-label="Actions">
+                                    <form action="/edit-review/<%= review.id %>" method="GET">
+                                        <button class="editbutton" type="submit">Edit Review</button>
+                                    </form>
+                                    <form action="/removeReview/<%= review.id %>" method="POST"
+                                        style="display: inline;"
+                                        onsubmit="return confirm('Are you sure you want to delete this review?');">
+                                        <button class="action-button deny-button" type="submit">Remove Review</button>
+                                    </form>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <% volunteers.forEach(volunteer=> { %>
-                                <tr>
-                                    <td>
-                                        <%= volunteer.vol_first %>
-                                    </td>
-                                    <td>
-                                        <%= volunteer.vol_last %>
-                                    </td>
-                                    <td>
-                                        <%= volunteer.vol_phone %>
-                                    </td>
-                                    <td>
-                                        <%= volunteer.vol_email %>
-                                    </td>
-                                    <td>
-                                        <%= volunteer.pref_contact %>
-                                    </td>
-                                    <td>
-                                        <%= volunteer.how_heard %>
-                                    </td>
-                                    <td>
-                                        <%= volunteer.vol_city %>
-                                    </td>
-                                    <td>
-                                        <%= volunteer.vol_state %>
-                                    </td>
-                                    <td>
-                                        <%= volunteer.sewing_level %>
-                                    </td>
-                                    <td>
-                                        <%= volunteer.hours_month %>
-                                    </td>
-                                    <td>
-                                        <form action="/deleteVolunteer/<%= volunteer.vol_id %>" method="POST"
-                                            style="display: inline;"
-                                            onsubmit="return confirm('Are you sure you want to delete this volunteer?');">
-                                            <button type="submit" class="deletevol-button">Delete</button>
-                                        </form>
-                                        <form action="/editVolunteer/<%= volunteer.vol_id %>" method="GET"
-                                            style="display: inline;">
-                                            <button type="button" class="editvol-button"
-                                                onclick="this.form.submit()">Edit</button>
-                                        </form>
-
-                                    </td>
-                                </tr>
-                                <% }); %>
-                        </tbody>
-                    </table>
-                    <% } else { %>
-                        <p>No volunteers found.</p>
-                        <% } %>
+                        <% }); %>
+                    </tbody>
+                </table>
             </div>
-
-
         </div>
     </div>
-  <!-- LogoutModal -->
-<!-- Modal Structure -->
-<div id="logoutModal" class="logout-modal" style="display: none;">
-    <div class="logout-modal-content">
-        <span class="logout-close-button" onclick="closeLogoutModal()">&times;</span>
-        <h2>Are you sure you want to logout?</h2>
-        <form action="/logout" method="POST">
-            <button type="submit" class="logout-yes-button">Yes, Logout</button>
-            <button type="button" class="logout-cancel-button" onclick="closeLogoutModal()">Cancel</button>
-        </form>
-    </div>
-</div>
-</div>
 
-<!-- FOOTER -->
- 
-<footer class="main-footer">
-    © 2024 Turtle Shelter Project, PO Box 382, Kaysville, UT 84037, 801-872-3190, turtleshelterproject@gmail.com
-</footer>
-<!-- FOOTER -->
-
-
-<script>
-function openLogoutModal() {
-    const modal = document.getElementById('logoutModal');
-    if (modal) {
-        modal.style.display = 'flex'; // Ensure flex to align content
-    } else {
-        console.error("Modal element not found.");
-    }
-}
-
-function closeLogoutModal() {
-    const modal = document.getElementById('logoutModal');
-    if (modal) {
-        modal.style.display = 'none'; // Hide modal
-    } else {
-        console.error("Modal element not found.");
-    }
-}
-</script>
-    
+    <footer class="main-footer">
+        © 2024 Turtle Shelter Project, PO Box 382, Kaysville, UT 84037, 801-872-3190, turtleshelterproject@gmail.com
+    </footer>
 </body>
-
-</html>
