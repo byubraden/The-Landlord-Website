@@ -3,7 +3,7 @@ const path = require("path");
 const session = require("express-session");
 
 const app = express();
-const port = 5500;
+const port = 5501;
 
 // Knex configuration for PostgreSQL
 const knex = require("knex")({
@@ -11,21 +11,13 @@ const knex = require("knex")({
     connection: {
         host: "localhost",
         user: "postgres",
-        password: "bradenPOST2644$", // Replace with your actual password
+        password: "", // Replace with your actual password / bradenPOST2644$
         database: "PROJECT3",
         port: 5432,
     },
 });
 
-// Utility function to capitalize the first letter of each word
-function capitalizeWords(str) {
-    if (!str) return ''; // Handle null or undefined
-    return str
-        .toLowerCase()
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-}
+
 
 // Set EJS as the view engine
 app.set("view engine", "ejs");
