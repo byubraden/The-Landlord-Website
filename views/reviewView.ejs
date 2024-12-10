@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landlord Review Page</title>
     <style>
+        /* Add the styles from your provided code here */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -145,120 +147,95 @@
         }
     </style>
 </head>
+
 <body>
     <div class="reviews-container">
-        <div class="review">
-            <div class="review-text"><strong>John Doe:</strong> Great landlord, always responsive and quick to fix any issues!</div>
-            <div class="review-date">Reviewed on: March 1, 2024</div>
-            <div class="rating-summary">
-                <div class="summary-title">Category Ratings:</div>
-                <div class="category-summary">Responsiveness: 4.5/5</div>
-                <div class="category-summary">Maintenance: 4/5</div>
-                <div class="category-summary">Communication: 5/5</div>
-                <div class="category-summary">Transparency: 5/5</div>
-                <div class="category-summary">Flexibility: 4.5/5</div>
-                <div class="average-rating">Average Rating: 4.6/5</div>
-            </div>
-        </div>
-
-        <div class="review">
-            <div class="review-text"><strong>Jane Smith:</strong> The maintenance took a bit longer than expected, but overall good experience.</div>
-            <div class="review-date">Reviewed on: February 18, 2024</div>
-            <div class="rating-summary">
-                <div class="summary-title">Category Ratings:</div>
-                <div class="category-summary">Responsiveness: 4/5</div>
-                <div class="category-summary">Maintenance: 3/5</div>
-                <div class="category-summary">Communication: 4/5</div>
-                <div class="category-summary">Transparency: 3.5/5</div>
-                <div class="category-summary">Flexibility: 4/5</div>
-                <div class="average-rating">Average Rating: 3.9/5</div>
-            </div>
-        </div>
-
-        <div class="review">
-            <div class="review-text"><strong>Chris Johnson:</strong> Very transparent and honest throughout the lease. Would recommend.</div>
-            <div class="review-date">Reviewed on: January 10, 2024</div>
-            <div class="rating-summary">
-                <div class="summary-title">Category Ratings:</div>
-                <div class="category-summary">Responsiveness: 5/5</div>
-                <div class="category-summary">Maintenance: 5/5</div>
-                <div class="category-summary">Communication: 5/5</div>
-                <div class="category-summary">Transparency: 5/5</div>
-                <div class="category-summary">Flexibility: 5/5</div>
-                <div class="average-rating">Average Rating: 5/5</div>
-            </div>
-        </div>
-
-        <div class="review">
-            <div class="review-text"><strong>Patricia Williams:</strong> Fair and flexible when it came to moving out dates. Could improve communication.</div>
-            <div class="review-date">Reviewed on: December 15, 2023</div>
-            <div class="rating-summary">
-                <div class="summary-title">Category Ratings:</div>
-                <div class="category-summary">Responsiveness: 4/5</div>
-                <div class="category-summary">Maintenance: 4/5</div>
-                <div class="category-summary">Communication: 3/5</div>
-                <div class="category-summary">Transparency: 4/5</div>
-                <div class="category-summary">Flexibility: 4/5</div>
-                <div class="average-rating">Average Rating: 3.8/5</div>
-            </div>
-        </div>
-
-        <div class="review">
-            <div class="review-text"><strong>Michael Brown:</strong> Responsive and helpful, though repairs could have been quicker.</div>
-            <div class="review-date">Reviewed on: November 20, 2023</div>
-            <div class="rating-summary">
-                <div class="summary-title">Category Ratings:</div>
-                <div class="category-summary">Responsiveness: 4/5</div>
-                <div class="category-summary">Maintenance: 3/5</div>
-                <div class="category-summary">Communication: 4/5</div>
-                <div class="category-summary">Transparency: 3.5/5</div>
-                <div class="category-summary">Flexibility: 4/5</div>
-                <div class="average-rating">Average Rating: 3.9/5</div>
-            </div>
-        </div>
+        <% if (reviews.length> 0) { %>
+            <% reviews.forEach(review=> { %>
+                <div class="review">
+                    <div class="review-text"><strong>
+                            <%= review.reviewer_first %>
+                                <%= review.reviewer_last %>:
+                        </strong>
+                        <%= review.additional_comments || 'No comments provided' %>
+                    </div>
+                    <div class="review-date">Reviewed on: <%= new Date(review.date_created).toLocaleDateString() %>
+                    </div>
+                    <div class="rating-summary">
+                        <div class="summary-title">Category Ratings:</div>
+                        <div class="category-summary">Responsiveness: <%= review.responsiveness %>/5</div>
+                        <div class="category-summary">Maintenance: <%= review.maintenance_and_repairs %>/5</div>
+                        <div class="category-summary">Communication: <%= review.communication %>/5</div>
+                        <div class="category-summary">Transparency: <%= review.transparency_and_honesty %>/5</div>
+                        <div class="category-summary">Flexibility: <%= review.fairness_and_flexibility %>/5</div>
+                    </div>
+                </div>
+                <% }); %>
+                    <% } else { %>
+                        <p>No reviews found for this landlord.</p>
+                        <% } %>
     </div>
 
     <div class="rating-container">
-        <div class="landlord-name">Landlord: Mike's Rentals</div>
+        <div class="landlord-name">Landlord: <%= landlord %>
+        </div>
+
         
+
+        <!-- Responsiveness Rating -->
         <div class="rating-category">
             <div class="category-name">Responsiveness</div>
             <div class="progress-bar">
-                <div class="progress" style="width: 90%;"></div>
+                <div class="progress" style="width: <%= averages.responsiveness ? averages.responsiveness * 20 : 0 %>%">
+                </div>
             </div>
         </div>
 
+        <!-- Maintenance and Repairs Rating -->
         <div class="rating-category">
             <div class="category-name">Maintenance and Repairs</div>
             <div class="progress-bar">
-                <div class="progress" style="width: 75%;"></div>
+                <div class="progress" style="width: <%= averages.maintenance ? averages.maintenance * 20 : 0 %>%"></div>
             </div>
         </div>
 
+        <!-- Communication Rating -->
         <div class="rating-category">
             <div class="category-name">Communication</div>
             <div class="progress-bar">
-                <div class="progress" style="width: 80%;"></div>
+                <div class="progress" style="width: <%= averages.communication ? averages.communication * 20 : 0 %>%">
+                </div>
             </div>
         </div>
 
+        <!-- Transparency Rating -->
         <div class="rating-category">
             <div class="category-name">Transparency</div>
             <div class="progress-bar">
-                <div class="progress" style="width: 70%;"></div>
+                <div class="progress" style="width: <%= averages.transparency ? averages.transparency * 20 : 0 %>%">
+                </div>
             </div>
         </div>
 
+        <!-- Flexibility Rating -->
         <div class="rating-category">
             <div class="category-name">Flexibility</div>
             <div class="progress-bar">
-                <div class="progress" style="width: 85%;"></div>
+                <div class="progress" style="width: <%= averages.flexibility ? averages.flexibility * 20 : 0 %>%"></div>
             </div>
         </div>
 
-        <div class="total-rating">Overall Rating: 4.2/5</div>
+        <!-- Overall Rating -->
+        <div class="total-rating">
+            Overall Rating: <%= totalAverage %>/5
+        </div>
 
-        <a href="#" class="add-review-button">Add Review</a>
+        <form action="/add-review/<%= landlordId %>" method="GET">
+            <button type="submit" class="add-review-button">Add Review</button>
+        </form>
     </div>
+
+
 </body>
+
 </html>
