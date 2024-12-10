@@ -6,19 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landlord Review Page</title>
     <style>
-        /* Add the styles from your provided code here */
+        /* General body style */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #F5F1E3;
+            background-color: #F5F5F5; /* Light gray background */
             display: flex;
             justify-content: space-between;
         }
 
-        /* Style for the review section */
+        /* Reviews section */
         .reviews-container {
             width: 66.6%;
-            background-color: #FFFFFF;
+            background-color: #FFFFFF; /* White background for reviews */
             padding: 20px;
             box-sizing: border-box;
             overflow-y: auto;
@@ -26,7 +26,7 @@
         }
 
         .review {
-            background-color: #DDDBCB;
+            background-color: #E9F1F7; /* Light blue background for reviews */
             padding: 20px;
             margin-bottom: 15px;
             border-radius: 8px;
@@ -39,7 +39,7 @@
 
         .review-text {
             font-size: 1.5rem;
-            color: #050505;
+            color: #004A66; /* Dark blue text */
             margin-bottom: 5px;
         }
 
@@ -51,7 +51,7 @@
 
         .rating-summary {
             margin-top: 15px;
-            background-color: #E4E4E4;
+            background-color: #F2F9FD; /* Light blue background for rating summary */
             padding: 10px;
             border-radius: 8px;
             font-size: 1.1rem;
@@ -72,10 +72,10 @@
             font-weight: bold;
         }
 
-        /* Style for the rating section */
+        /* Rating section */
         .rating-container {
             width: 33.3%;
-            background-color: #DDDBCB;
+            background-color: #FFFFFF; /* White background for ratings */
             padding: 20px;
             box-sizing: border-box;
             height: 100vh;
@@ -84,7 +84,7 @@
 
         .landlord-name {
             font-size: 2rem;
-            color: #050505;
+            color: #004A66; /* Dark blue for landlord name */
             font-weight: bold;
             margin-bottom: 40px;
         }
@@ -97,12 +97,12 @@
             font-size: 1.6rem;
             font-weight: bold;
             margin-bottom: 10px;
-            color: #050505;
+            color: #004A66; /* Dark blue for category names */
         }
 
         .progress-bar {
             height: 25px;
-            background-color: #F5F1E3;
+            background-color: #E9F1F7; /* Light blue background for progress bar */
             border-radius: 12px;
             overflow: hidden;
             margin-bottom: 10px;
@@ -110,7 +110,7 @@
 
         .progress {
             height: 100%;
-            background-color: #1B9AAA;
+            background-color: #1B9AAA; /* Medium blue for the progress bar */
             width: 0%;
             border-radius: 12px;
         }
@@ -118,7 +118,7 @@
         .total-rating {
             font-size: 2rem;
             font-weight: bold;
-            color: #050505;
+            color: #004A66; /* Dark blue for the total rating */
             margin-top: 30px;
         }
 
@@ -133,8 +133,8 @@
             padding: 15px 20px;
             font-size: 1.2rem;
             font-weight: bold;
-            color: #FFFFFF;
-            background-color: #1B9AAA;
+            color: #FFFFFF; /* White text on button */
+            background-color: #1B9AAA; /* Medium blue for button */
             text-align: center;
             border-radius: 8px;
             text-decoration: none;
@@ -143,7 +143,7 @@
         }
 
         .add-review-button:hover {
-            background-color: #158B8A;
+            background-color: #158B8A; /* Darker blue when hovered */
         }
     </style>
 </head>
@@ -180,7 +180,7 @@
         <div class="landlord-name">Landlord: <%= landlord %>
         </div>
 
-        
+
 
         <!-- Responsiveness Rating -->
         <div class="rating-category">
