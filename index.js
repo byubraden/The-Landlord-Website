@@ -11,7 +11,7 @@ const knex = require("knex")({
     connection: {
         host: "localhost",
         user: "postgres",
-        password: "", // Replace with your actual password
+        password: "bradenPOST2644$", // Replace with your actual password
         database: "PROJECT3",
         port: 5432,
     },
