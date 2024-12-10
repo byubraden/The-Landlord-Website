@@ -161,9 +161,17 @@
     <div class="top-bar">
         <div class="logo"></div>
         <div class="account-buttons">
-            <a href="/signup" class="account-tab">Sign Up</a>
-            <a href="/loginpage" class="account-tab">Login</a>
+            <% if (user) { %>
+                <a href="/admin" class="account-tab">Admin</a>
+                <form action="/logout" method="POST" style="display: inline;">
+                    <button type="submit" class="account-tab">Logout</button>
+                </form>
+            <% } else { %>
+                <!-- <a href="/signup" class="account-tab">Sign Up</a> -->
+                <a href="/loginpage" class="account-tab">Login</a>
+            <% } %>
         </div>
+        
     </div>
 
     <!-- Title -->
