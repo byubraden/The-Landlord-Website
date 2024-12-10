@@ -139,18 +139,18 @@
     <div class="form-title">Post a Review</div>
 
     <form action="/submit-review" method="POST">
-        <!-- Searchable dropdown for landlords -->
-        <div class="form-group searchable-dropdown">
-            <label for="landlord" class="form-label">Select a Landlord:</label>
-            <input type="text" id="landlord-search" placeholder="Search landlords..." oninput="filterOptions()" onclick="showDropdown()">
-            <div class="dropdown-options" id="dropdown-options">
-                <div class="dropdown-option" onclick="selectOption('Landlord 1')">Landlord 1</div>
-                <div class="dropdown-option" onclick="selectOption('Landlord 2')">Landlord 2</div>
-                <div class="dropdown-option" onclick="selectOption('Landlord 3')">Landlord 3</div>
-                <div class="dropdown-option" onclick="selectOption('Landlord 4')">Landlord 4</div>
-                <div class="dropdown-option" onclick="selectOption('Landlord 5')">Landlord 5</div>
-            </div>
-            <input type="hidden" id="selected-landlord" name="landlord">
+        <input type="hidden" name="landlordId" value="<%= landlordId %>">
+        
+        <h2><%= landlordName %></h2>
+
+        <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input type="text" name="firstName" placeholder="Your first name" required>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" name="lastName" placeholder="Your last name" required>
         </div>
 
         <!-- Sliders for each rating category -->
@@ -220,41 +220,6 @@
         <button type="submit" class="submit-btn">Submit Review</button>
     </form>
 </div>
-
-<script>
-    function filterOptions() {
-        const input = document.getElementById("landlord-search");
-        const filter = input.value.toLowerCase();
-        const options = document.getElementById("dropdown-options").getElementsByClassName("dropdown-option");
-
-        for (let option of options) {
-            if (option.textContent.toLowerCase().includes(filter)) {
-                option.style.display = "block";
-            } else {
-                option.style.display = "none";
-            }
-        }
-    }
-
-    function selectOption(option) {
-        document.getElementById("landlord-search").value = option;
-        document.getElementById("selected-landlord").value = option;
-        showDropdown(); // Keep dropdown accessible
-    }
-
-    function showDropdown() {
-        document.getElementById("dropdown-options").style.display = "block";
-    }
-
-    // Close dropdown on outside click
-    document.addEventListener("click", function(event) {
-        const dropdown = document.getElementById("dropdown-options");
-        const searchInput = document.getElementById("landlord-search");
-        if (!dropdown.contains(event.target) && event.target !== searchInput) {
-            dropdown.style.display = "none";
-        }
-    });
-</script>
 
 </body>
 </html>
