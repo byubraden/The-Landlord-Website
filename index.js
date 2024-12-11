@@ -545,7 +545,7 @@ app.post('/edit-review/:id', async (req, res) => {
         }
 
         // Redirect to the landlord's review view page
-        res.redirect(`/review-view/${landlord.id}`);
+        res.redirect(`/admin-tenant-reviews`);
     } catch (error) {
         console.error('Error updating review:', error);
         res.status(500).send('Internal Server Error');
